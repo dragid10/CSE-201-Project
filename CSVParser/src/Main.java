@@ -1,41 +1,12 @@
-import java.io.*;
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
-        parse();
-    }
-
-    static void parse() throws FileNotFoundException {
-        ArrayList<String> counties = new ArrayList<>();
-        ArrayList<String> votingNumbers = new ArrayList<>();
-        PrintWriter file = new PrintWriter("counties.txt");
+    public static void main(String[] args) {
+        CSVParse csvParse = new CSVParse();
         try {
-            BufferedReader inFile = new BufferedReader(new FileReader("RegisteredOhioVoters.csv"));
-            String line = "";
-            String county = "";
-            String voterNum = "";
-            while ((line = inFile.readLine()) != null) {
-                county = line.substring(0, line.indexOf(','));
-                voterNum = line.substring(line.indexOf(',') + 1, line.length());
-                counties.add(county);
-                votingNumbers.add(voterNum);
-            }
-            inFile.close();
-
-            for (String s : counties) {
-                file.println(s);
-                System.out.println(s);
-            }
-            file = new PrintWriter("votingNumbers.txt");
-            for (String s : votingNumbers) {
-                file.println(s);
-                System.out.println(s);
-            }
-        } catch (IOException e) {
+            csvParse.parse();
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            file.close();
         }
     }
 }
