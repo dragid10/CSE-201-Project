@@ -4,31 +4,33 @@ import java.util.ArrayList;
 /*
 * Will still have to tweak even more to ge the individual voting nums (democratic, republican, green, etc..
 */
-public class CSVParse {
-    public void parse() throws FileNotFoundException {
+class CSVParse {
+    void parse() throws FileNotFoundException {
         // Houses the counties from the read in line
         ArrayList<String> counties = new ArrayList<>();
 
         // Houses the voting nums from the read in line
         ArrayList<String> votingNumbers = new ArrayList<>();
 
-        // Opens a PrintWriter for the future to use.
-        PrintWriter pFile = new PrintWriter("OutputFiles/counties.txt");
-
         // Gotta encompass everything in a try, catch or else it'll yell at you.
-        try {
+        try (PrintWriter countWriter = new PrintWriter("OutputFiles/counties.txt");
+                PrintWriter votNumWriter = new PrintWriter("OutputFiles/votingNumbers.txt")) {
             File dir = new File("VoterRegFiles/");
             // Read in lines will be assigned to this variable
-            String line = "";
+            String line, county, voterNum;
             // counties will be assigned to this variable
-            String county = "";
+//            String county = "";
 
             // Voter numbers will be assigned to this variable
-            String voterNum = "";
+//            String voterNum = "";
 
             // Reads all .csv files in a directory one at a time and proceeds to do things with them
             // We will have to tweak this to work with JFileChooser
             for (File file : dir.listFiles()) {
+
+                votNumWriter.flush();
+                countWriter.flush();
+
                 // The read in file is assigned to a BufferedReader called inFile
                 BufferedReader inFile = new BufferedReader(new FileReader(file));
 
@@ -40,8 +42,8 @@ public class CSVParse {
                     counties.add(county);
                     votingNumbers.add(voterNum);
                 }
-                // The BufferedReader MUST be closed or else it will not print to the text file
-                inFile.close();
+
+//                inFile.close();
 
                 /*
                 * Goes through each arraylist and prints the indicies to a text file
@@ -49,26 +51,29 @@ public class CSVParse {
                 * If not closed, it will NOT write.
                 */
                 for (String s : counties) {
-                    pFile.println(s);
-                    // Used to check if the counties are correct
-                    // System.out.println(s);
-                }
-                pFile.close();
+//                    pFile.println(s);
+                    countWriter.append(s + '\n');
 
-                pFile = new PrintWriter("OutputFiles/votingNumbers.txt");
-                for (String s : votingNumbers) {
-                    pFile.println(s);
-                    // Used to check if the voting nums are correct
-                    // System.out.println(s);
+                    // Used to check if the counties are correct
+//                    System.out.println(s);
                 }
+
+                for (String s : votingNumbers) {
+//                    pFile.println(s);
+                    votNumWriter.append(s + '\n');
+                    // Used to check if the voting nums are correct
+//                    System.out.println(s);
+                }
+
+                counties.clear();
+                votingNumbers.clear();
 
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            // Must close pFile in the try block if doing something else after printing votingNumbers
-            pFile.close();
         }
+        // Must close pFile in the try block if doing something else after printing votingNumbers
+
     }
 }
 
