@@ -1,3 +1,5 @@
+package Parser;
+
 import java.io.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -7,12 +9,12 @@ import java.util.Date;
 /*
 * Will still have to tweak even more to ge the individual voting nums (democratic, republican, green, etc..
 */
-class CSVParse {
+public class CSVParse {
     private int lineNumber = 0;
     private File readFile;
     private PrintWriter err;
 
-    void parse() throws FileNotFoundException {
+    public void parse() throws FileNotFoundException {
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
         err = new PrintWriter("logs/" + formatter.format(date) + ".txt");
@@ -48,6 +50,8 @@ class CSVParse {
 
                     if (line.indexOf(',') == -1) {
                         // Prints to log file if the line is corrupt
+                        printIllegalArgToLogFile();
+                    } else if (line.indexOf(',') == 0 || line.indexOf(',') == line.length() - 1) {
                         printIllegalArgToLogFile();
                     } else {
                         // Isolates county and voting nums in each line, and adds them to their respective arraylists
