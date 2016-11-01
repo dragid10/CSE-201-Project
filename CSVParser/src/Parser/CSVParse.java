@@ -9,12 +9,14 @@ import java.util.Date;
 /*
 * Will still have to tweak even more to ge the individual voting nums (democratic, republican, green, etc..
 */
-public class CSVParse {
+class CSVParse {
     private int lineNumber = 0;
     private File readFile;
     private PrintWriter err;
+    private final String COUNTY_FILENAME = "OutputFiles/counties.hamilton";
+    private final String VOTINGNUM_FILENAME = "OutputFiles/votingNumbers.hamilton";
 
-    public void parse() throws FileNotFoundException {
+    void parse() throws FileNotFoundException {
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
         err = new PrintWriter("logs/" + formatter.format(date) + ".txt");
@@ -26,8 +28,8 @@ public class CSVParse {
         ArrayList<String> votingNumbers = new ArrayList<>();
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
-        try (PrintWriter countWriter = new PrintWriter("OutputFiles/counties.hamilton");
-             PrintWriter votNumWriter = new PrintWriter("OutputFiles/votingNumbers.hamilton")) {
+        try (PrintWriter countWriter = new PrintWriter(COUNTY_FILENAME);
+             PrintWriter votNumWriter = new PrintWriter(VOTINGNUM_FILENAME)) {
             File dir = new File("VoterRegFiles/");
             // Read in lines will be assigned to this variable
             String line, county, voterNum;
