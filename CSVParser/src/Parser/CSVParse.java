@@ -26,8 +26,8 @@ public class CSVParse {
         ArrayList<String> votingNumbers = new ArrayList<>();
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
-        try (PrintWriter countWriter = new PrintWriter("OutputFiles/counties.FuckABitchToPassTheTimeMassAppealOrangeRindsYouSmokeYourGreenImSpendingMine");
-             PrintWriter votNumWriter = new PrintWriter("OutputFiles/votingNumbers.FuckABitchToPassTheTimeMassAppealOrangeRindsYouSmokeYourGreenImSpendingMine")) {
+        try (PrintWriter countWriter = new PrintWriter("OutputFiles/counties.hamilton");
+             PrintWriter votNumWriter = new PrintWriter("OutputFiles/votingNumbers.hamilton")) {
             File dir = new File("VoterRegFiles/");
             // Read in lines will be assigned to this variable
             String line, county, voterNum;
