@@ -2,6 +2,7 @@ package VotingData;
 
 
 public class VoterData {
+    private String precinct;
     private int demVotes;
     private int repVotes;
     private int othVotes;
@@ -14,9 +15,14 @@ public class VoterData {
     }
 
     public VoterData() {
+        setPrecinct("Type: Null");
         setDemVotes(0);
         setRepVotes(0);
         setOthVotes(0);
+    }
+
+    private void setPrecinct(String precinct) {
+        this.precinct = precinct;
     }
 
     private void setDemVotes(int demVotes) {
