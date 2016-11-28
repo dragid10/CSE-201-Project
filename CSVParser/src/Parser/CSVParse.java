@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+//TODO ADD PRECINCT DATA (CountyName,*District*,DemVotes,RepVotes,OthVotes)
 public class CSVParse {
     // HashMap that houses all of the CountyData
     public HashMap<String, VoterData> countyVoteInfo = new HashMap<>();
