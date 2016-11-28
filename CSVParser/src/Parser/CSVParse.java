@@ -10,6 +10,8 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class CSVParse {
+    // HashMap that houses all of the CountyData
+    public HashMap<String, VoterData> countyVoteInfo = new HashMap<>();
 
     private int lineNumber;
     private File readFile;
@@ -22,7 +24,6 @@ public class CSVParse {
     private ArrayList<String> demVotingNumbers = new ArrayList<>();
     private ArrayList<String> repVotingNumbers = new ArrayList<>();
     private ArrayList<String> othVotingNumbers = new ArrayList<>();
-    private HashMap<String, VoterData> countyVoteInfo = new HashMap<>();
 
     //=============================================================== Constructor (Singleton)
     // Makes CSVParse a Singleton, because there only ever needs to be one instance of it
@@ -38,7 +39,6 @@ public class CSVParse {
 
     //=============================================================== Getters / Setters
 
-
     private int getLineNumber() {
         return lineNumber;
     }
@@ -49,12 +49,13 @@ public class CSVParse {
 
     //=============================================================== Public Methods
     public void parse() throws FileNotFoundException {
+
+        // Date function to name error logs
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
         err = new PrintWriter("logs/" + formatter.format(date) + ".txt");
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
-
         String OTHNUM_FILENAME = ".OutputFiles/othNumbers.bin";
         String COUNTY_FILENAME = ".OutputFiles/counties.bin";
         String DEMNUM_FILENAME = ".OutputFiles/demNumbers.bin";
@@ -84,14 +85,17 @@ public class CSVParse {
 
                 // The while loop that reads in each line from the .csv file
                 while ((line = inFile.readLine()) != null) {
+
+                    // Increments line number as for loop progresses through eahc file
                     setLineNumber(lineNumber + 1);
 
+
+                    // Prints to log file if the line is corrupt
                     if (line.indexOf(',') == -1 || line.indexOf(',') == 0 || line.indexOf(',') == line.length() - 1 ||
                             !validLine(line)) {
-                        // Prints to log file if the line is corrupt
                         printIllegalArgToLogFile();
                     } else {
-                        // Isolates county and voting nums in each line, and adds them to their respective arraylists
+                        // Isolates county and voting nums in each line, and adds them to their respective Arraylists
                         int countyPos = line.indexOf(','), demNumPos = line.indexOf(',', countyPos + 1),
                                 repNumPos = line.indexOf(',', demNumPos + 1);
                         county = line.substring(0, countyPos);
@@ -99,6 +103,7 @@ public class CSVParse {
                         repNum = line.substring(demNumPos + 1, repNumPos);
                         othNum = line.substring(repNumPos + 1, line.length());
 
+                        // Skips duplicates
                         if (!counties.contains(county)) {
                             counties.add(county);
                             demVotingNumbers.add(demNum);
@@ -118,32 +123,19 @@ public class CSVParse {
                 */
                 for (String s : counties) {
                     countWriter.append(s).append('\n');
-                    // Used to check if the counties are correct
-//                    System.out.println(s);
                 }
                 for (String s : demVotingNumbers) {
                     votNumWriter.append(s).append('\n');
-                    // Used to check if the voting nums are correct
-//                    System.out.println(s);
                 }
                 for (String s : repVotingNumbers) {
                     votNumWriter2.append(s).append('\n');
-                    // Used to check if the voting nums are correct
-//                    System.out.println(s);
                 }
                 for (String s : othVotingNumbers) {
                     votNumWriter3.append(s).append('\n');
-                    // Used to check if the voting nums are correct
-//                    System.out.println(s);
                 }
-
-                //TODO Consider deleting as it is not needed
-//                counties.clear();
-//                demVotingNumbers.clear();
-//                repVotingNumbers.clear();
-//                othVotingNumbers.clear();
             }
 
+            // Closes all PrintWriters
             countWriter.close();
             votNumWriter.close();
             votNumWriter2.close();
@@ -158,14 +150,13 @@ public class CSVParse {
     }
 
     public void loadVoterData() {
+        // Loads the voting data into the HashMap from Arraylists
         for (int i = 0; i < counties.size(); i++) {
             countyVoteInfo.put(counties.get(i), new VoterData(
                     Integer.parseInt(demVotingNumbers.get(i)),
                     Integer.parseInt(repVotingNumbers.get(i)),
                     Integer.parseInt(othVotingNumbers.get(i))));
         }
-        //TODO Delete Eventually
-//        System.out.println("Hash-Table Check");
     }
 
     //=============================================================== Private Methods
@@ -192,6 +183,7 @@ public class CSVParse {
     private boolean validLine(String line) {
         int numCommas = 0;
 
+        // If the current line does have 3 commas, then it is invalid
         for (int i = 0; i < line.length(); i++) {
             if (line.charAt(i) == ',') {
                 numCommas++;
