@@ -18,6 +18,12 @@ public class CSVParse {
     private File readFile;
     private PrintWriter err;
 
+    // Directory you're reading from
+    private File dir;
+//    dir = new File("VoterRegFiles/");
+
+
+
     // Houses the counties from the read in line (Primary storage to reduce chance of error)
     private ArrayList<String> counties = new ArrayList<>();
 
@@ -48,8 +54,12 @@ public class CSVParse {
         this.lineNumber = lineNumber;
     }
 
+    public File getDir() {
+        return dir;
+    }
+
     //=============================================================== Public Methods
-    public void parse() throws FileNotFoundException {
+    public void parse(String directory) throws FileNotFoundException {
 
         // Date function to name error logs
         Date date = new Date();
@@ -65,7 +75,6 @@ public class CSVParse {
              PrintWriter votNumWriter = new PrintWriter(DEMNUM_FILENAME);
              PrintWriter votNumWriter2 = new PrintWriter(REPNUM_FILENAME);
              PrintWriter votNumWriter3 = new PrintWriter(OTHNUM_FILENAME)) {
-            File dir = new File("VoterRegFiles/");
             // Read in lines will be assigned to this variable
             String line, county, demNum, repNum, othNum;
 
