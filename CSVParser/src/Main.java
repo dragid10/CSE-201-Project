@@ -1,4 +1,4 @@
-package Parser;
+import Parser.CSVParse;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -8,9 +8,10 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        CSVParse csvParse = new CSVParse();
+        CSVParse csvParse = CSVParse.getInstance();
         try {
             csvParse.parse();
+            csvParse.loadVoterData();
         } catch (FileNotFoundException e) {
             Date date = new Date();
             Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
