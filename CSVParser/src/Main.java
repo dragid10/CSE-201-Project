@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         CSVParse csvParse = CSVParse.getInstance();
         try {
-            csvParse.parse();
+            csvParse.parse("VoterRegFiles/");
             csvParse.loadVoterData();
         } catch (FileNotFoundException e) {
             Date date = new Date();
