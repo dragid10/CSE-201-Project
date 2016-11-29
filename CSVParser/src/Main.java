@@ -15,7 +15,7 @@ public class Main {
         } catch (FileNotFoundException e) {
             Date date = new Date();
             Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
-            PrintWriter err = new PrintWriter("logs/" + formatter.format(date) + ".txt");
+            PrintWriter err = new PrintWriter("logs/" + formatter.format(date) + ".log");
             err.append("The file is not found!!\n");
             err.append("------------------------------------------------------\n\r");
             err.append("StackTrace: \n");
