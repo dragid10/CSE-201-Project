@@ -103,15 +103,23 @@ fabric.properties
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-#.OutputFiles/
 .directory
-#.gitignore
 .idea/
 CSVParser.iml
+
+#Custom Ignores
 Part2.csv
 Part3Errors.csv.bak
 RegisteredOhioVoters.csv
 RegisteredOhioVoters.csv.bak
-#VoterRegFiles/
-#logs/
-#src/Main.java
+*.log
+*.bin
+
+
+!/libs/guava-19.0.jar
+!/.gitignore
+!/logs/
+!/libs/
+!/VoterRegFiles/TEST_RegisteredOhioVoters.csv
+!/VoterRegFiles/TEST_ExampleData.csv
+!/VoterRegFiles/TEST_Part3Errors.csv
