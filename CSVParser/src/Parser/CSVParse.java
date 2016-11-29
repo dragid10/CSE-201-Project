@@ -7,18 +7,23 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static VotingData.VoterData.countyVoteInfo;
 
 public class CSVParse {
-    // HashMap that houses all of the CountyData
-    public HashMap<String, VoterData> countyVoteInfo = new HashMap<>();
-
+    private static final Logger LOGGER = Logger.getLogger(CSVParse.class.getName());
     private int lineNumber;
     private File readFile;
     private PrintWriter err;
 
+    // Directory you're reading from
+    private File dir;
+
     // Houses the counties from the read in line (Primary storage to reduce chance of error)
     private ArrayList<String> counties = new ArrayList<>();
+    private ArrayList<String> precincts = new ArrayList<>();
 
     // Houses the voting nums from the read in line
     private ArrayList<String> demVotingNumbers = new ArrayList<>();
@@ -47,12 +52,20 @@ public class CSVParse {
         this.lineNumber = lineNumber;
     }
 
+    public File getDir() {
+        return dir;
+    }
+
     //=============================================================== Public Methods
-    public void parse() throws FileNotFoundException {
+    public void parse(String directory) throws FileNotFoundException {
+        // Sets directory to what user chooses
+        dir = new File(directory);
+
 
         // Date function to name error logs
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
+        // TODO Give option to save error log anywhere
         err = new PrintWriter("logs/" + formatter.format(date) + ".txt");
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
@@ -64,9 +77,8 @@ public class CSVParse {
              PrintWriter votNumWriter = new PrintWriter(DEMNUM_FILENAME);
              PrintWriter votNumWriter2 = new PrintWriter(REPNUM_FILENAME);
              PrintWriter votNumWriter3 = new PrintWriter(OTHNUM_FILENAME)) {
-            File dir = new File("VoterRegFiles/");
             // Read in lines will be assigned to this variable
-            String line, county, demNum, repNum, othNum;
+            String line, county, precinct, demNum, repNum, othNum;
 
             // Reads all .csv files in a directory one at a time and proceeds to do things with them
             // We will have to tweak this to work with JFileChooser
@@ -86,9 +98,8 @@ public class CSVParse {
                 // The while loop that reads in each line from the .csv file
                 while ((line = inFile.readLine()) != null) {
 
-                    // Increments line number as for loop progresses through eahc file
+                    // Increments line number as for loop progresses through each file
                     setLineNumber(lineNumber + 1);
-
 
                     // Prints to log file if the line is corrupt
                     if (line.indexOf(',') == -1 || line.indexOf(',') == 0 || line.indexOf(',') == line.length() - 1 ||
@@ -96,25 +107,32 @@ public class CSVParse {
                         printIllegalArgToLogFile();
                     } else {
                         // Isolates county and voting nums in each line, and adds them to their respective Arraylists
-                        int countyPos = line.indexOf(','), demNumPos = line.indexOf(',', countyPos + 1),
+                        int countyPos = line.indexOf(','), precinctPos = line.indexOf(',', countyPos + 1),
+                                demNumPos = line.indexOf(',', precinctPos + 1),
                                 repNumPos = line.indexOf(',', demNumPos + 1);
                         county = line.substring(0, countyPos);
-                        demNum = line.substring(countyPos + 1, demNumPos);
+                        precinct = line.substring(countyPos + 1, precinctPos);
+                        demNum = line.substring(precinctPos + 1, demNumPos);
                         repNum = line.substring(demNumPos + 1, repNumPos);
                         othNum = line.substring(repNumPos + 1, line.length());
 
-                        // Skips duplicates
-                        if (!counties.contains(county)) {
+                        // New BR used for dupLines method ot check if word is duplicated
+                        BufferedReader inFile2 = new BufferedReader(new FileReader(file));
+                        String searchTerm = county + "," + precinct;
+
+                        // If line is a duplicate, then print it to the log file
+                        if (!(dupLine(searchTerm, inFile2))) {
                             counties.add(county);
+                            precincts.add(precinct);
                             demVotingNumbers.add(demNum);
                             repVotingNumbers.add(repNum);
                             othVotingNumbers.add(othNum);
                         } else {
-                            System.out.println("Line Not added (Duplicate)");
+                            printDuplicateLinesToLogFile(line);
                         }
-
                     }
                 }
+                LOGGER.log(Level.FINE, "Array-check!");
 
                 /*
                 * Goes through each arraylist and prints the indicies to a text file
@@ -140,8 +158,7 @@ public class CSVParse {
             votNumWriter.close();
             votNumWriter2.close();
             votNumWriter3.close();
-
-            System.out.println("Parsing Complete!");
+            LOGGER.log(Level.FINE, "Parsing Complete!");
         } catch (IOException e) {
             printIOExcepToLogFile(e);
         } catch (IllegalArgumentException p) {
@@ -152,14 +169,19 @@ public class CSVParse {
     public void loadVoterData() {
         // Loads the voting data into the HashMap from Arraylists
         for (int i = 0; i < counties.size(); i++) {
-            countyVoteInfo.put(counties.get(i), new VoterData(
+            String curCounty = counties.get(i);
+
+            countyVoteInfo.put(curCounty, new VoterData(
+                    precincts.get(i),
                     Integer.parseInt(demVotingNumbers.get(i)),
                     Integer.parseInt(repVotingNumbers.get(i)),
                     Integer.parseInt(othVotingNumbers.get(i))));
         }
+        LOGGER.log(Level.FINE, "HashMultiMap-check!");
     }
 
     //=============================================================== Private Methods
+
     private void printIOExcepToLogFile(Exception e) throws FileNotFoundException {
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
@@ -174,8 +196,17 @@ public class CSVParse {
     private void printIllegalArgToLogFile() throws FileNotFoundException {
         String fileName = "" + readFile;
         fileName = fileName.substring(fileName.indexOf('/') + 1, fileName.length());
-        err.append("The Line(").append(String.valueOf(getLineNumber())).append(") in ").append("").append(fileName)
-                .append(" could not be read, or is corrupt!").append("\n");
+        err.append("[Error: Corrupt or Invalid line] on line(").append(String.valueOf(getLineNumber())).append(") in ")
+                .append("").append(fileName).append("\n");
+        err.append("------------------------------------------------------\n\r");
+        err.flush();
+    }
+
+    private void printDuplicateLinesToLogFile(String dupLine) throws FileNotFoundException {
+        String fileName = "" + readFile;
+        fileName = fileName.substring(fileName.indexOf('/') + 1, fileName.length());
+        err.append("[Error: Duplicate Entry] on line(").append(String.valueOf(getLineNumber())).append(") in ")
+                .append("").append(fileName).append(": ").append(dupLine).append("\n");
         err.append("------------------------------------------------------\n\r");
         err.flush();
     }
@@ -189,7 +220,23 @@ public class CSVParse {
                 numCommas++;
             }
         }
-        return numCommas == 3;
+        return numCommas == 4;
+    }
+
+    private boolean dupLine(String search, BufferedReader br) {
+//        Checks to see if county and precinct are located anywhere else through file, if so then it is duplicate
+        int occurrence = 0;
+        try {
+            String line;
+            while ((line = br.readLine()) != null) {
+                int index = -1;
+                while ((index = line.indexOf(search, index + 1)) != -1)
+                    occurrence++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return occurrence >= 2;
     }
 }
 
