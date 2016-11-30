@@ -114,6 +114,7 @@ RegisteredOhioVoters.csv
 RegisteredOhioVoters.csv.bak
 *.log
 *.bin
+*.*~
 
 
 !/libs/guava-19.0.jar
