@@ -78,8 +78,8 @@ public class TextDisplay extends JFrame {
 		
 		included = new JLabel("Counties include in Summary:");
 		included.setFont(new Font("TImes New Roman", Font.PLAIN, 15));
-		countyTotal.add(included);
-		included.setBounds(5, 170, 380, 30);
+		//countyTotal.add(included);
+		//included.setBounds(5, 170, 380, 30);
 		
 		//scroll.setBounds(0, 199, 380, 101);
 

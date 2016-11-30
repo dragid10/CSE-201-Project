@@ -53,7 +53,7 @@ public class CountyDisplay extends JPanel {
 						for(VoterData voter: v){
 							if(voter.getCounty().equals(((JCheckBox) e.getSource()).getText())){
 								userCounties.add(voter);
-								System.out.println("Added " + ((JCheckBox) e.getSource()).getText());
+								//System.out.println("Added " + ((JCheckBox) e.getSource()).getText());
 							}
 						}
 					}
@@ -63,7 +63,7 @@ public class CountyDisplay extends JPanel {
 						for(int i = v.size()-1; i > 0; i--){
 							if(v.get(i).getCounty().equals(((JCheckBox) e.getSource()).getText())){
 								userCounties.remove(v.get(i));
-								System.out.println("Removed " + ((JCheckBox) e.getSource()).getText());
+								//System.out.println("Removed " + ((JCheckBox) e.getSource()).getText());
 							}
 						}
 					}
@@ -119,9 +119,6 @@ public class CountyDisplay extends JPanel {
 	}
 	
 	public ArrayList<VoterData> pickedCounties(){
-		for(VoterData v: userCounties){
-			System.out.println(v);
-		}
 		return userCounties;
 	}
 	

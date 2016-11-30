@@ -1,17 +1,13 @@
 package app;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -78,6 +74,9 @@ public class Main extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new ImportWindow();
+				if(display.isVisible() || display != null){
+					frame.remove(display);
+				}
 			}
 		});
 		panel.add(getData);
@@ -88,7 +87,6 @@ public class Main extends JPanel {
 		counties.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				welcome.setVisible(false);
 				counties.setEnabled(false);
 				temp = parser.getData();
@@ -112,9 +110,8 @@ public class Main extends JPanel {
 		pie.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				selected = display.pickedCounties();
-				selected.add(new VoterData("Delaware", "fish", 234, 12, 23));
+				//selected.add(new VoterData("Delaware", "fish", 234, 12, 23));
 				if (selected.size() > 0) {
 					PieChartDisplay d = new PieChartDisplay(selected);
 					d.pack();
@@ -134,7 +131,6 @@ public class Main extends JPanel {
 		text.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				selected = display.pickedCounties();
 				if (selected.size() > 0) {
 					new TextDisplay(selected);
@@ -153,7 +149,6 @@ public class Main extends JPanel {
 		bar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				 selected = display.pickedCounties();
 				if (selected.size() > 0) {
 					final BarChartDisplay b = new BarChartDisplay(selected);

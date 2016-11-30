@@ -1,0 +1,23 @@
+[Error: Duplicate Entry] on line(25) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Logan,Perry,98,0,75
+------------------------------------------------------
+[Error: Duplicate Entry] on line(27) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Logan,Cat,90,0,106
+------------------------------------------------------
+[Error: Duplicate Entry] on line(45) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Logan,Perry,98,0,75
+------------------------------------------------------
+[Error: Duplicate Entry] on line(46) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Logan,Dog,106,0,90
+------------------------------------------------------
+[Error: Duplicate Entry] on line(47) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Logan,Cat,90,0,106
+------------------------------------------------------
+[Error: Duplicate Entry] on line(64) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Stark,Mel.W32,203,4,301
+------------------------------------------------------
+[Error: Duplicate Entry] on line(65) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Stark,GibsonW4,294,0,192
+------------------------------------------------------
+[Error: Duplicate Entry] on line(66) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Stark,Ken,194,0,391
+------------------------------------------------------
+[Error: Duplicate Entry] on line(70) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Stark,Mel.W32,203,4,301
+------------------------------------------------------
+[Error: Duplicate Entry] on line(71) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Stark,GibsonW4,294,0,192
+------------------------------------------------------
+[Error: Duplicate Entry] on line(72) in C:\Users\Kofi\CSE-201-Project\VoterRegistartionApp\src\VoterRegFiles\ExampleData.txt: Stark,Ken,194,0,391
+------------------------------------------------------
+
