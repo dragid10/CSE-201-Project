@@ -11,16 +11,26 @@ public class VoterData {
     //=============================================================== Variables
     private static final Logger LOGGER = Logger.getLogger( VoterData.class.getName() );
 
-    public String precinct;
+    private String county;
+    private String precinct;
     private int demVotes;
     private int repVotes;
     private int othVotes;
 
     // HashMap that houses all of the CountyData
-    public static HashMultimap<String, VoterData> countyVoteInfo = HashMultimap.create();
+    public static HashMultimap<String, VoterData> voterDataHashmap = HashMultimap.create();
+
 
     //=============================================================== Constructors
     public VoterData(String precinct, int demVotes, int repVotes, int othVotes) {
+        setPrecinct(precinct);
+        setDemVotes(demVotes);
+        setRepVotes(repVotes);
+        setOthVotes(othVotes);
+    }
+
+    public VoterData(String county, String precinct, int demVotes, int repVotes, int othVotes) {
+        setCounty(county);
         setPrecinct(precinct);
         setDemVotes(demVotes);
         setRepVotes(repVotes);
@@ -34,15 +44,12 @@ public class VoterData {
         setOthVotes(0);
     }
 
-    public VoterData(String precinct) {
-        setPrecinct(precinct);
-        setDemVotes(0);
-        setRepVotes(0);
-        setOthVotes(0);
-    }
-
-
     //=============================================================== Getters / Setters
+
+
+    private void setCounty(String county) {
+        this.county = county;
+    }
 
     private void setPrecinct(String precinct) {
         this.precinct = precinct;
