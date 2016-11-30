@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static VotingData.VoterData.countyVoteInfo;
+import static VotingData.VoterData.voterDataHashmap;
 
 public class CSVParse {
     private static final Logger LOGGER = Logger.getLogger(CSVParse.class.getName());
@@ -20,6 +20,8 @@ public class CSVParse {
 
     // Directory you're reading from
     private File dir;
+
+    public static ArrayList<VoterData> voterDataArray = new ArrayList<>();
 
     // Houses the counties from the read in line (Primary storage to reduce chance of error)
     private ArrayList<String> counties = new ArrayList<>();
@@ -69,10 +71,10 @@ public class CSVParse {
         err = new PrintWriter("logs/" + formatter.format(date) + ".log");
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
-        String OTHNUM_FILENAME = ".OutputFiles/othNumbers.bin";
-        String COUNTY_FILENAME = ".OutputFiles/counties.bin";
-        String DEMNUM_FILENAME = ".OutputFiles/demNumbers.bin";
-        String REPNUM_FILENAME = ".OutputFiles/repNumbers.bin";
+        String COUNTY_FILENAME = ".outputFiles/counties.bin";
+        String DEMNUM_FILENAME = ".outputFiles/demNumbers.bin";
+        String REPNUM_FILENAME = ".outputFiles/repNumbers.bin";
+        String OTHNUM_FILENAME = ".outputFiles/othNumbers.bin";
         try (PrintWriter countWriter = new PrintWriter(COUNTY_FILENAME);
              PrintWriter votNumWriter = new PrintWriter(DEMNUM_FILENAME);
              PrintWriter votNumWriter2 = new PrintWriter(REPNUM_FILENAME);
@@ -127,7 +129,20 @@ public class CSVParse {
                             demVotingNumbers.add(demNum);
                             repVotingNumbers.add(repNum);
                             othVotingNumbers.add(othNum);
+                            voterDataArray.add(new VoterData(county, precinct, Integer.parseInt(demNum),
+                                    Integer.parseInt(repNum),
+                                    Integer.parseInt(othNum)));
                         } else {
+                            counties.add(county + " - incomplete");
+                            precincts.add(precinct);
+                            demVotingNumbers.add("-666");
+                            repVotingNumbers.add("-666");
+                            othVotingNumbers.add("-666");
+                            voterDataArray.add(new VoterData(county + " - incomplete",
+                                    precinct,
+                                    Integer.parseInt(demNum),
+                                    Integer.parseInt(repNum),
+                                    Integer.parseInt(othNum)));
                             printDuplicateLinesToLogFile(line);
                         }
                     }
@@ -171,7 +186,8 @@ public class CSVParse {
         for (int i = 0; i < counties.size(); i++) {
             String curCounty = counties.get(i);
 
-            countyVoteInfo.put(curCounty, new VoterData(
+            voterDataHashmap.put(curCounty, new VoterData(
+                    counties.get(i),
                     precincts.get(i),
                     Integer.parseInt(demVotingNumbers.get(i)),
                     Integer.parseInt(repVotingNumbers.get(i)),
@@ -179,7 +195,7 @@ public class CSVParse {
         }
         LOGGER.log(Level.FINE, "HashMultiMap-check!");
     }
-
+    
     //=============================================================== Private Methods
 
     private void printIOExcepToLogFile(Exception e) throws FileNotFoundException {
