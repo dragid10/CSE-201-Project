@@ -50,6 +50,7 @@ public class CountyDisplay extends JPanel {
 				if (e.getSource() instanceof JCheckBox) {
 					if (((JCheckBox) e.getSource()).isSelected()){ 
 						((JCheckBox) e.getSource()).setSelected(true);
+						clearAll.setSelected(false);
 						for(VoterData voter: v){
 							if(voter.getCounty().equals(((JCheckBox) e.getSource()).getText())){
 								userCounties.add(voter);
@@ -75,7 +76,6 @@ public class CountyDisplay extends JPanel {
 			//JCheckBox checkBox = new JCheckBox(v.get(i).getCounty());
 			countyboxes[i].setSelected(false);
 			countyboxes[i].addItemListener(listener);
-			countyboxes[i].setSelected(false);
 			top.add(countyboxes[i]);
 			
 			//checkBox.setSelected(false);

@@ -1,6 +1,8 @@
 package app;
 
 import java.awt.GradientPaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -27,6 +29,7 @@ import java.awt.Dimension;
 public class BarChartDisplay extends JFrame {
 	//County selected;
 	JButton close = new JButton("Close");
+	JPanel panel = new JPanel();
 	int totalDemoVotes = 0;
 	int totalRepubVotes = 0;
 	int totalIndieVotes = 0;
@@ -34,6 +37,11 @@ public class BarChartDisplay extends JFrame {
 	public BarChartDisplay(ArrayList<VoterData> v) { //change to VoterData
 		super("Bar Chart Vizulization");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setSize(570, 480);
+		pack();
+		add(panel);
+		panel.setLayout(null);
+		panel.setBackground(new Color(0xBBBBDD));
 		
 		for(int i = 0; i < v.size(); i++){
 			totalDemoVotes += v.get(i).getDemVotes();
@@ -45,7 +53,18 @@ public class BarChartDisplay extends JFrame {
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(570, 450));
-		setContentPane(chartPanel);
+		panel.add(chartPanel);
+		chartPanel.setBounds(0, 0, 570, 450);
+		
+		close = new JButton("Close");
+		close.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		panel.add(close);
+		close.setBounds(230, 450, 80, 30);
 		
 	}
 

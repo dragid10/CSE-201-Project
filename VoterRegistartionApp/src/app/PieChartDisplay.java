@@ -1,6 +1,7 @@
 package app;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -11,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
@@ -22,7 +24,6 @@ import database.VoterData;
 import javafx.scene.chart.PieChart;
 
 public class PieChartDisplay extends JFrame {
-	//static County selected;
 	static int totalDemVotes = 0;
 	static int totalRepVotes = 0;
 	static int totalOthVotes = 0;
