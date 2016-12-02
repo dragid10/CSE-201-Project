@@ -1,6 +1,4 @@
 package database;
-import database.VoterData;
-
 import java.io.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -75,7 +73,7 @@ public class CSVParse {
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
         // TODO Give option to save error log anywhere
-        err = new PrintWriter("logs/" + formatter.format(date) + ".log");
+        err = new PrintWriter(dir + "/logs/" + formatter.format(date) + ".log");
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
         String COUNTY_FILENAME = ".outputFiles/counties.bin";
@@ -209,7 +207,7 @@ public class CSVParse {
     private void printIOExcepToLogFile(Exception e) throws FileNotFoundException {
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
-        PrintWriter err = new PrintWriter("logs/" + formatter.format(date) + ".log");
+        PrintWriter err = new PrintWriter(dir + "/logs/" + formatter.format(date) + ".log");
         err.append("An IO Exception of some sort has occurred \n");
         err.append("------------------------------------------------------\n\r");
         err.append("StackTrace: \n");
