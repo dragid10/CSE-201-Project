@@ -1,6 +1,4 @@
 package database;
-import database.VoterData;
-
 import java.io.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
