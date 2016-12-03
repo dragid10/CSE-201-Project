@@ -1,28 +1,15 @@
 package app;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-import org.jfree.ui.RefineryUtilities;
 
 import database.CSVParse;
 import database.VoterData;
+import org.jfree.ui.RefineryUtilities;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Main extends JPanel {
 	static JFrame frame;
@@ -30,11 +17,11 @@ public class Main extends JPanel {
 	CountyDisplay display;
 	JButton getData;
 	static JButton counties;
-	static JButton pie, text, bar;
+	static JButton pie, text, bar, all;
 	JButton quit;
 	JLabel welcome;
 	Image welcomePic = Toolkit.getDefaultToolkit().createImage("lifeispain.jpg");
-	Image background = Toolkit.getDefaultToolkit().createImage("csegredo.jpg");
+	Image background = Toolkit.getDefaultToolkit().createImage("csebgredo.jpg");
 
 	CSVParse parser = CSVParse.getInstance();
 	ArrayList<VoterData> temp = new ArrayList<>();
@@ -63,9 +50,12 @@ public class Main extends JPanel {
 		panel.setLayout(null);
 		frame.add(panel);
 
-		JLabel back = new JLabel(new ImageIcon(background));
-		panel.add(back);
-		back.setBounds(0, 0, screenWidth, screenHeight);
+		/*JLabel back = new JLabel(new ImageIcon(background));
+		frame.setContentPane(back);
+		back.setVisible(true);
+		back.setBounds(0, 0, screenWidth, screenHeight);*/
+		
+		
 
 		//
 		welcome = new JLabel(new ImageIcon(welcomePic));
@@ -78,6 +68,13 @@ public class Main extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new ImportWindow();
+				if(display != null){
+					display.setVisible(false);
+					welcome.setVisible(true);
+					
+					revalidate();
+				}
+				
 			}
 		});
 		panel.add(getData);
@@ -88,7 +85,6 @@ public class Main extends JPanel {
 		counties.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				welcome.setVisible(false);
 				counties.setEnabled(false);
 				temp = parser.getData();
@@ -99,12 +95,13 @@ public class Main extends JPanel {
 				pie.setEnabled(true);
 				text.setEnabled(true);
 				bar.setEnabled(true);
+				all.setEnabled(true);
 				repaint();	
 		}
 		});
 		panel.add(counties);
 		counties.setBounds(screenWidth / 2 - 70, (screenHeight / 3) * 2, screenWidth / 4 + 40, buttonHeight);
-	
+		
 		
 		// displays chosen data in a pie chart format in a new panel
 		pie = new JButton("Pie Chart");
@@ -112,9 +109,8 @@ public class Main extends JPanel {
 		pie.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				selected = display.pickedCounties();
-				selected.add(new VoterData("Delaware", "fish", 234, 12, 23));
+				//selected.add(new VoterData("Delaware", "fish", 234, 12, 23));
 				if (selected.size() > 0) {
 					PieChartDisplay d = new PieChartDisplay(selected);
 					d.pack();
@@ -134,7 +130,6 @@ public class Main extends JPanel {
 		text.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				selected = display.pickedCounties();
 				if (selected.size() > 0) {
 					new TextDisplay(selected);
@@ -153,7 +148,6 @@ public class Main extends JPanel {
 		bar.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				 selected = display.pickedCounties();
 				if (selected.size() > 0) {
 					final BarChartDisplay b = new BarChartDisplay(selected);
@@ -168,6 +162,20 @@ public class Main extends JPanel {
 		panel.add(bar);
 		bar.setBounds(screenWidth - screenWidth / 4 - 50, (screenHeight / 3) * 2 + 50, screenWidth / 4, buttonHeight);
 
+		all = new JButton("All");
+		all.setEnabled(false);
+		all.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pie.doClick();
+				text.doClick();
+				bar.doClick();
+			}
+		});
+		panel.add(all);
+		all.setBounds(0,500, 50, 30);  //TODO change all this stuff later;
+			
+		
 		// Prompts the user if they want to quit application and does so if
 		// "yes" is pressed
 		quit = new JButton("Quit");
@@ -187,7 +195,12 @@ public class Main extends JPanel {
 
 		panel.revalidate();
 		panel.repaint();
-		}
+	}
+	
+	public void paint(Graphics g){
+		super.paint(g);
+		g.drawImage(background, 0, 0, null);
+	}
 
 	public static void main(String[] args) {
 		new Main();
