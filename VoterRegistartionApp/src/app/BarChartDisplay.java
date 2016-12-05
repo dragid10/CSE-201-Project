@@ -19,6 +19,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import database.County;
 import database.VoterData;
 
 import java.awt.Color;
@@ -32,7 +33,7 @@ public class BarChartDisplay extends JFrame {
 	private int totalRepVotes = 0;
 	private int totalOthVotes = 0;
 	
-	public BarChartDisplay(ArrayList<VoterData> v) { //change to VoterData
+	public BarChartDisplay(ArrayList<County> c) { //change to VoterData
 		super("Bar Chart Vizulization");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(570, 480);
@@ -40,10 +41,10 @@ public class BarChartDisplay extends JFrame {
 		//panel.setLayout(null);
 		//panel.setBackground(new Color(0xBBBBDD));
 		
-		for(int i = 0; i < v.size(); i++){
-			totalDemVotes += v.get(i).getDemVotes();
-			totalRepVotes += v.get(i).getRepVotes();
-			totalOthVotes += v.get(i).getOthVotes();
+		for(int i = 0; i < c.size(); i++){
+			totalDemVotes += c.get(i).getDemVotingData();
+			totalRepVotes += c.get(i).getRepVotingData();
+			totalOthVotes += c.get(i).getOthVotingData();
 		}
 		
 		final CategoryDataset dataset = createDataset();

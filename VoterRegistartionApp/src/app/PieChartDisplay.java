@@ -13,6 +13,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
+import database.County;
 import database.VoterData;
 
 public class PieChartDisplay extends JFrame {
@@ -21,13 +22,13 @@ public class PieChartDisplay extends JFrame {
 	private static int totalRepVotes = 0;
 	private static int totalOthVotes = 0;
 	
-	public PieChartDisplay(ArrayList<VoterData> v) { //change to VoterData
+	public PieChartDisplay(ArrayList<County> c) { //change to VoterData
 		super("Pie Chart Vizulization");
 				
-		for(int i = 0; i < v.size(); i++){
-			totalDemVotes += v.get(i).getDemVotes();
-			totalRepVotes += v.get(i).getRepVotes();
-			totalOthVotes += v.get(i).getOthVotes();
+		for(int i = 0; i < c.size(); i++){
+			totalDemVotes += c.get(i).getDemVotingData();
+			totalRepVotes += c.get(i).getRepVotingData();
+			totalOthVotes += c.get(i).getOthVotingData();
 		}
 		setPreferredSize(new Dimension(570, 450));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import database.County;
 import database.VoterData;
 
 public class TextDisplay extends JFrame {
@@ -22,7 +23,7 @@ public class TextDisplay extends JFrame {
 	//private JTextArea selectedCounties;
 	private JScrollPane scroll;
 	
-	public TextDisplay(ArrayList<VoterData> v) {
+	public TextDisplay(ArrayList<County> c) {
 		JPanel panel = new JPanel();
 		setSize(380, 300);
 		setLocationRelativeTo(null);
@@ -35,12 +36,12 @@ public class TextDisplay extends JFrame {
 		int totalRepubVotes = 0;
 		int totalIndieVotes = 0;
 		
-		for(int i = 0; i < v.size(); i++){
+		for(int i = 0; i < c.size(); i++){
 			//if(!countyNames.contains(v.get(i).getCounty()))
 				//countyNames+=v.get(i).getCounty()+"\n";
-			totalDemoVotes += v.get(i).getDemVotes();
-			totalRepubVotes += v.get(i).getRepVotes();
-			totalIndieVotes += v.get(i).getOthVotes();
+			totalDemoVotes += c.get(i).getDemVotingData();
+			totalRepubVotes += c.get(i).getRepVotingData();
+			totalIndieVotes += c.get(i).getOthVotingData();
 		}
 		
 		int total = totalDemoVotes + totalRepubVotes + totalIndieVotes;
@@ -53,14 +54,22 @@ public class TextDisplay extends JFrame {
 		top.setBounds(0, 0, 380, 199);
 		
 		
-		top.setLayout(new GridLayout( (v.size()*4)+v.size(), 1));
-		/*for(VoterData county: v){
-			
-		}*/
+		top.setLayout(new GridLayout( (c.size()*4)+c.size(), 1));
+		for(County county: c){
+			top.add(new JLabel(county.getCounty()));
+			top.add(new JLabel("Democrat: "+ county.getDemVotingData()+
+							   " ("+county.getDemVotingData()/county.getTotal()*100+"%)"));
+			top.add(new JLabel("Republican: "+ county.getRepVotingData()+
+					  		   " ("+county.getRepVotingData()/county.getTotal()*100+"%)"));
+			top.add(new JLabel("Independent: "+ county.getOthVotingData()+
+					  " ("+county.getOthVotingData()/county.getTotal()*100+"%)"));
+			top.add(new JLabel(""));
+		}
 		
 		bottom = new JPanel();
 		panel.add(bottom);
 		bottom.setLayout(new GridLayout(4, 1));
+		//setVGap(0);
 		bottom.setBounds(0, 199, 380, 101);
 		
 		title = new JLabel("Total:");

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import database.County;
 import database.VoterData;
 
 public class CountyDisplay extends JPanel {
@@ -21,6 +22,7 @@ public class CountyDisplay extends JPanel {
 	private static final long serialVersionUID = 2457977387854519801L;
 	JPanel top = new JPanel();
 	JPanel bottom = new JPanel();
+	private ArrayList<County> userCounties = new ArrayList<>();
 
 	JCheckBox adams = new JCheckBox("Adams"), allen = new JCheckBox("Allen"), butler = new JCheckBox("Butler"),
 			carroll = new JCheckBox("Carroll"), clark = new JCheckBox("Clark"), delaware = new JCheckBox("Delaware"),
@@ -33,10 +35,10 @@ public class CountyDisplay extends JPanel {
 	JCheckBox[] countyboxes = { adams, allen, butler, carroll, clark, delaware, erie, fairfield, greene,
 			hamilton, jefferson, logan, madison, ottawa, perry, ross, sandusky, stark };
 	//ArrayList<JCheckBox> countyBoxes = new ArrayList<>();
-	ArrayList<VoterData> userCounties = new ArrayList<>();
+	ArrayList<VoterData> userVoterData = new ArrayList<>();
 
 
-	public CountyDisplay(ArrayList<VoterData> v) {
+	public CountyDisplay(ArrayList<County> counties) { //ArrayList<VoterData> v){
 		setBackground(Color.WHITE);
 		setLayout(null);
 		top.setBackground(Color.WHITE);
@@ -58,33 +60,31 @@ public class CountyDisplay extends JPanel {
 					if (((JCheckBox) e.getSource()).isSelected()){ 
 						((JCheckBox) e.getSource()).setSelected(true);
 						clearAll.setSelected(false);
-						for(VoterData voter: v){
-							if(voter.getCounty().equals(((JCheckBox) e.getSource()).getText())){
-								userCounties.add(voter);
-								//System.out.println("Added " + ((JCheckBox) e.getSource()).getText());
+						for(County c: counties){
+							if(c.getCounty().equals(((JCheckBox) e.getSource()).getText())){
+								userCounties.add(c);
 							}
 						}
-					}
-					else {
+					} else {
 						((JCheckBox) e.getSource()).setSelected(false);
 						checkAll.setSelected(false);
-						for(int i = v.size()-1; i > 0; i--){
-							if(v.get(i).getCounty().equals(((JCheckBox) e.getSource()).getText())){
-								userCounties.remove(v.get(i));
-								//System.out.println("Removed " + ((JCheckBox) e.getSource()).getText());
+						for(int i = counties.size()-1; i > 0; i--){
+							if(counties.get(i).getCounty().equals(((JCheckBox) e.getSource()).getText())){
+								userCounties.remove(counties.get(i));
 							}
 						}
 					}
 				}
 			}
 		};
-
+		
 		for (int i = 0; i < countyboxes.length; i++) {
 			countyboxes[i].setSelected(false);
 			countyboxes[i].addItemListener(listener);
 			top.add(countyboxes[i]);
 			countyboxes[i].setBackground(Color.WHITE);
-			countyboxes[i].setForeground(Color.RED);
+			
+			//countyboxes[i].setForeground(Color.RED);
 			
 			//JCheckBox checkBox = new JCheckBox(v.get(i).getCounty());
 			//checkBox.setSelected(false);
@@ -94,10 +94,11 @@ public class CountyDisplay extends JPanel {
 
 		bottom.setLayout(new GridLayout(1, 2));
 		checkAll.setHorizontalAlignment(SwingConstants.CENTER);
+		checkAll.setBackground(Color.WHITE);
 		checkAll.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent ie) {
-				if (checkAll.isSelected()) {
+ 				if (checkAll.isSelected()) {
 					clearAll.setSelected(false);
 					for (int i = 0; i < countyboxes.length; i++) {
 						((JCheckBox)countyboxes[i]).setSelected(true);
@@ -108,6 +109,7 @@ public class CountyDisplay extends JPanel {
 		bottom.add(checkAll);
 		
 		clearAll.setHorizontalAlignment(SwingConstants.CENTER);
+		clearAll.setBackground(Color.WHITE);
 		clearAll.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent ie) {
@@ -115,20 +117,17 @@ public class CountyDisplay extends JPanel {
 					for (int i = 0; i < countyboxes.length; i++) {
 						((JCheckBox)countyboxes[i]).setSelected(false);	
 					}
-					userCounties = new ArrayList<VoterData>();
+					userVoterData = new ArrayList<VoterData>();
 				}
 			}
 		});
 		bottom.add(clearAll);
 		
-		checkAll.setBackground(Color.WHITE);
-		clearAll.setBackground(Color.WHITE);
-		
 		repaint();
 		revalidate();
 	}
 	
-	public ArrayList<VoterData> pickedCounties(){
+	public ArrayList<County> pickedCounties(){
 		return userCounties;
 	}
 }

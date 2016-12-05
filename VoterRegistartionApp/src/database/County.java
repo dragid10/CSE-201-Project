@@ -20,15 +20,14 @@ public class County {
     public County(String county) {
         super();
         this.county = county;
-        totalDemVotes = 0;
-        totalRepVotes = 0;
-        totalOthVotes = 0;
+        setTotalDemVotes(county);
+        setTotalRepVotes(county);
+        setTotalOthVotes(county);
 
     }
     // ================================================================================= Getters / Setters
-
     private void setTotalDemVotes(String countyName) {
-        int total = 0;
+        //int total = 0;
         Collection<VoterData> test = voterDataHashmap.get(countyName);
         Object[] testArray = test.toArray();
         for (Object aTestArray : testArray) {
@@ -38,7 +37,7 @@ public class County {
     }
 
     private void setTotalRepVotes(String countyName) {
-        int total = 0;
+        //int total = 0;
         Collection<VoterData> test = voterDataHashmap.get(countyName);
         Object[] testArray = test.toArray();
         for (Object aTestArray : testArray) {
@@ -48,7 +47,7 @@ public class County {
     }
 
     private void setTotalOthVotes(String countyName) {
-        int total = 0;
+        //int total = 0;
         Collection<VoterData> test = voterDataHashmap.get(countyName);
         Object[] testArray = test.toArray();
         for (Object aTestArray : testArray) {
@@ -57,7 +56,7 @@ public class County {
         }
     }
 
-    private String getCounty() {
+    public String getCounty() {
         return county;
     }
 
@@ -94,10 +93,8 @@ public class County {
     }
 
     // ================================================================================= Private Methods
-    private void getTotals() {
-        getTotalDemVotes(getCounty());
-        getTotalRepVotes(getCounty());
-        getTotalOthVotes(getCounty());
+    public int getTotal() {
+        return getTotalDemVotes(getCounty()) + getTotalRepVotes(getCounty()) + getTotalOthVotes(getCounty());
     }
 
 }

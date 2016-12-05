@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import org.jfree.ui.RefineryUtilities;
 
 import database.CSVParse;
+import database.County;
 import database.VoterData;
 
 public class Main extends JPanel {
@@ -33,8 +34,8 @@ public class Main extends JPanel {
 	Image background = Toolkit.getDefaultToolkit().getImage("csebgredo_rgb.jpg");
 
 	CSVParse parser = CSVParse.getInstance();
-	ArrayList<VoterData> temp = new ArrayList<>();
-	ArrayList<VoterData> selected = new ArrayList<>();
+	ArrayList<County> temp = new ArrayList<>();
+	ArrayList<County> selected = new ArrayList<>();
 	
 	private int screenWidth = 400, screenHeight = 600;
 	private int buttonHeight = 30;
@@ -97,7 +98,10 @@ public class Main extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				welcome.setVisible(false);
 				counties.setEnabled(false); //makes check counties button false
-				temp = parser.getData();
+				String[] countyNames = parser.getListOfCounties();
+				for(String s: countyNames){
+					temp.add(new County(s));
+				}
 				display = new CountyDisplay(temp);
 				panel.add(display);
 				display.setBounds(window);
