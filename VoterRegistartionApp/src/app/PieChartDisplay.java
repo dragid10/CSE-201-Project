@@ -1,6 +1,11 @@
 package app;
 
-import database.VoterData;
+import java.awt.Dimension;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -8,14 +13,13 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
+import database.VoterData;
 
 public class PieChartDisplay extends JFrame {
-	static int totalDemVotes = 0;
-	static int totalRepVotes = 0;
-	static int totalOthVotes = 0;
+	private static final long serialVersionUID = 5996167323926060184L;
+	private static int totalDemVotes = 0;
+	private static int totalRepVotes = 0;
+	private static int totalOthVotes = 0;
 	
 	public PieChartDisplay(ArrayList<VoterData> v) { //change to VoterData
 		super("Pie Chart Vizulization");
@@ -55,13 +59,4 @@ public class PieChartDisplay extends JFrame {
 		dataSet.setValue(independent+"%", totalOthVotes/total);
  		return dataSet;
 	}
-	
-	//For testing purposes only
-	/*public static void main(String[] args){
-		PieChartDisplay d = new PieChartDisplay();
-		d.pack();
-		RefineryUtilities.centerFrameOnScreen(d);
-		d.setVisible(true);
-		
-	}*/
 }

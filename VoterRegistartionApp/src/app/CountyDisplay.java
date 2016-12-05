@@ -1,12 +1,12 @@
 package app;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -15,6 +15,10 @@ import database.VoterData;
 
 public class CountyDisplay extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2457977387854519801L;
 	JPanel top = new JPanel();
 	JPanel bottom = new JPanel();
 
@@ -33,10 +37,13 @@ public class CountyDisplay extends JPanel {
 
 
 	public CountyDisplay(ArrayList<VoterData> v) {
+		setBackground(Color.WHITE);
 		setLayout(null);
+		top.setBackground(Color.WHITE);
 		JScrollPane scroll = new JScrollPane(top);
 		add(scroll);
 		scroll.setBounds(0,0, 380, 220); //scroll.setBounds(0, 0, 190, 220);
+		bottom.setBackground(Color.WHITE);
 		add(bottom);
 		bottom.setBounds(0, 220, 380, 40);
 		
@@ -73,15 +80,15 @@ public class CountyDisplay extends JPanel {
 		};
 
 		for (int i = 0; i < countyboxes.length; i++) {
-			//JCheckBox checkBox = new JCheckBox(v.get(i).getCounty());
 			countyboxes[i].setSelected(false);
 			countyboxes[i].addItemListener(listener);
 			top.add(countyboxes[i]);
+			countyboxes[i].setBackground(Color.WHITE);
+			countyboxes[i].setForeground(Color.RED);
 			
+			//JCheckBox checkBox = new JCheckBox(v.get(i).getCounty());
 			//checkBox.setSelected(false);
 			//checkBox.addItemListener(listener);
-			//countyBoxes[i].setSelected(false);
-			//countyBoxes[i].addItemListener(listener);
 			//top.add(checkBox);
 		}
 
@@ -114,6 +121,9 @@ public class CountyDisplay extends JPanel {
 		});
 		bottom.add(clearAll);
 		
+		checkAll.setBackground(Color.WHITE);
+		clearAll.setBackground(Color.WHITE);
+		
 		repaint();
 		revalidate();
 	}
@@ -121,24 +131,4 @@ public class CountyDisplay extends JPanel {
 	public ArrayList<VoterData> pickedCounties(){
 		return userCounties;
 	}
-	
-	//For testing purposes only
-	/*public static void main(String[] args){
-		ArrayList<VoterData> temp = new ArrayList<>();
-		//temp.add(new VoterData("Franklin", "Good", 345, 45, 67));
-		//temp.add(new VoterData("Butler", "Fresh", 23, 456, 1));
-		//temp.add(new VoterData("Delaware", " Apple", 212, 382, 20));
-		
-		JFrame frame = new JFrame("County Selector");
-		JPanel panel = new CountyDisplay(temp);
-		frame.pack();
-		frame.setBounds(0, 0, 380, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		//frame.setResizable(false);
-		frame.add(panel);
-	}*/
-	
-	
 }

@@ -18,43 +18,40 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
 
 import database.VoterData;
 
 import java.awt.Color;
 import java.awt.Dimension;
-
+//TODO http://www.java2s.com/Code/Java/Chart/JFreeChartBarChartDemo.htm
 public class BarChartDisplay extends JFrame {
-	//County selected;
-	JButton close = new JButton("Close");
-	JPanel panel = new JPanel();
-	int totalDemoVotes = 0;
-	int totalRepubVotes = 0;
-	int totalIndieVotes = 0;
+	private static final long serialVersionUID = 878357737971892631L;
+	private JButton close = new JButton("Close");
+	private JPanel panel = new JPanel();
+	private int totalDemVotes = 0;
+	private int totalRepVotes = 0;
+	private int totalOthVotes = 0;
 	
 	public BarChartDisplay(ArrayList<VoterData> v) { //change to VoterData
 		super("Bar Chart Vizulization");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(570, 480);
-		pack();
-		add(panel);
-		panel.setLayout(null);
-		panel.setBackground(new Color(0xBBBBDD));
+		//add(panel);
+		//panel.setLayout(null);
+		//panel.setBackground(new Color(0xBBBBDD));
 		
 		for(int i = 0; i < v.size(); i++){
-			totalDemoVotes += v.get(i).getDemVotes();
-			totalRepubVotes += v.get(i).getRepVotes();
-			totalIndieVotes += v.get(i).getOthVotes();
+			totalDemVotes += v.get(i).getDemVotes();
+			totalRepVotes += v.get(i).getRepVotes();
+			totalOthVotes += v.get(i).getOthVotes();
 		}
 		
 		final CategoryDataset dataset = createDataset();
 		final JFreeChart chart = createChart(dataset);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(570, 450));
-		panel.add(chartPanel);
-		chartPanel.setBounds(0, 0, 570, 450);
+		add(chartPanel);
+		//chartPanel.setBounds(0, 0, 570, 450);
 		
 		close = new JButton("Close");
 		close.addActionListener(new ActionListener(){
@@ -63,8 +60,8 @@ public class BarChartDisplay extends JFrame {
 				dispose();
 			}
 		});
-		panel.add(close);
-		close.setBounds(230, 450, 80, 30);
+		//add(close);
+		//close.setBounds(230, 450, 80, 30);
 		
 	}
 
@@ -76,9 +73,9 @@ public class BarChartDisplay extends JFrame {
 		final String category1 = "";
 
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		dataset.addValue(totalDemoVotes, demo+" = "+totalDemoVotes, category1);
-		dataset.addValue(totalRepubVotes, rep+" = "+totalRepubVotes, category1);
-		dataset.addValue(totalIndieVotes, ind+" = "+totalIndieVotes, category1 );
+		dataset.addValue(totalDemVotes, demo+" = "+totalDemVotes, category1);
+		dataset.addValue(totalRepVotes, rep+" = "+totalRepVotes, category1);
+		dataset.addValue(totalOthVotes, ind+" = "+totalOthVotes, category1 );
 		
 		return dataset;
 	}
@@ -126,12 +123,4 @@ public class BarChartDisplay extends JFrame {
 		
 		return chart;
 	}
-	
-	//For testing purposes only
-	/*public static void main(String[] args){
-		final BarChartDisplay b = new BarChartDisplay(v);
-		b.pack();
-		RefineryUtilities.centerFrameOnScreen(b);
-		b.setVisible(true);
-	}*/
 }

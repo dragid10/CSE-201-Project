@@ -1,10 +1,9 @@
 package app;
 
-import java.awt.Font;
+
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,10 +13,14 @@ import javax.swing.JTextArea;
 import database.VoterData;
 
 public class TextDisplay extends JFrame {
-	JPanel main, top, bottom;
-	JLabel title, dem, rep, ind, included;
-	JTextArea selectedCounties;
-	JScrollPane scroll;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8732870481739182805L;
+	private JPanel top, bottom;
+	private JLabel title, dem, rep, ind;//, included;
+	//private JTextArea selectedCounties;
+	private JScrollPane scroll;
 	
 	public TextDisplay(ArrayList<VoterData> v) {
 		JPanel panel = new JPanel();
@@ -51,9 +54,9 @@ public class TextDisplay extends JFrame {
 		
 		
 		top.setLayout(new GridLayout( (v.size()*4)+v.size(), 1));
-		for(VoterData county: v){
+		/*for(VoterData county: v){
 			
-		}
+		}*/
 		
 		bottom = new JPanel();
 		panel.add(bottom);
@@ -77,8 +80,8 @@ public class TextDisplay extends JFrame {
 		bottom.add(ind);
 	}
 	
-	//For testing purposes only
-	/*public static void main(String[] args){
+	/*For testing purposes only
+	public static void main(String[] args){
 		ArrayList<VoterData> temp = new ArrayList<>();
 		temp.add(new VoterData("Franklin","afsdp", 345, 45, 67));
 		temp.add(new VoterData("Bulter","ahidsj", 23, 456, 1));
