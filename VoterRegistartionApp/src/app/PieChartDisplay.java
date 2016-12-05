@@ -1,27 +1,16 @@
 package app;
 
-import java.awt.Dimension;
-import java.io.File;
-import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
+import database.VoterData;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
 
-import database.VoterData;
-import javafx.scene.chart.PieChart;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 
 public class PieChartDisplay extends JFrame {
 	static int totalDemVotes = 0;

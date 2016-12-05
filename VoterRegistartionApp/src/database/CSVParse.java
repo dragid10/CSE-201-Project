@@ -1,21 +1,24 @@
 package database;
-import database.VoterData;
 
 import java.io.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static database.VoterData.voterDataHashmap;
+
 
 public class CSVParse {
     private static final Logger LOGGER = Logger.getLogger(CSVParse.class.getName());
     private int lineNumber;
     private File readFile;
     private PrintWriter err;
+    private String logDirectory;
+
 
     // Directory you're reading from
     private File dir;
@@ -32,17 +35,19 @@ public class CSVParse {
     private ArrayList<String> othVotingNumbers = new ArrayList<>();
 
     //=============================================================== Constructor (Singleton)
-    // Makes CSVParse a Singleton, because there only ever needs to be one instance of it
+    // Makes database.CSVParse a Singleton, because there only ever needs to be one instance of it
     private static CSVParse ourInstance = new CSVParse();
 
     public static CSVParse getInstance() {
         return ourInstance;
     }
 
-    private CSVParse() {
+    protected CSVParse() {
         setLineNumber(0);
+        File file = new File(".");
+        setLogDirectory(file.getAbsolutePath());
     }
-    
+
     //=============================================================== Getters / Setters
 
     private int getLineNumber() {
@@ -55,27 +60,35 @@ public class CSVParse {
 
     public File getDir() {
         return dir;
-    } 
-    
-    public ArrayList<VoterData> getData(){
-    	ArrayList<VoterData> temp = new ArrayList<>();
-    	for(VoterData v: voterDataArray){
-    		temp.add(v.clone());
-    	}
-    	return temp;
     }
+
+    public ArrayList<VoterData> getData() {
+        ArrayList<VoterData> temp = new ArrayList<>();
+        for (VoterData v : voterDataArray) {
+            temp.add(v.clone());
+        }
+        return temp;
+    }
+
+    public String getLogDirectory() {
+        return logDirectory;
+    }
+
+    public void setLogDirectory(String logDirectory) {
+        this.logDirectory = logDirectory;
+    }
+
 
     //=============================================================== Public Methods
     public void parse(String directory) throws FileNotFoundException {
         // Sets directory to what user chooses
         dir = new File(directory);
-
+        // Default Directory TODO Maybe come change this to a diff directory
 
         // Date function to name error logs
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
-        // TODO Give option to save error log anywhere
-        err = new PrintWriter("logs/" + formatter.format(date) + ".log");
+        err = new PrintWriter(getLogDirectory() + "/logs/" + formatter.format(date) + ".log"); //TODO add (getLogDirectory() + "/) LIES REMOVE
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
         String COUNTY_FILENAME = ".outputFiles/counties.bin";
@@ -83,7 +96,7 @@ public class CSVParse {
         String REPNUM_FILENAME = ".outputFiles/repNumbers.bin";
         String OTHNUM_FILENAME = ".outputFiles/othNumbers.bin";
         try {
-        	PrintWriter countWriter = new PrintWriter(COUNTY_FILENAME);
+            PrintWriter countWriter = new PrintWriter(COUNTY_FILENAME);
             PrintWriter votNumWriter = new PrintWriter(DEMNUM_FILENAME);
             PrintWriter votNumWriter2 = new PrintWriter(REPNUM_FILENAME);
             PrintWriter votNumWriter3 = new PrintWriter(OTHNUM_FILENAME);
@@ -131,7 +144,7 @@ public class CSVParse {
                         String searchTerm = county + "," + precinct;
 
                         // If line is a duplicate, then print it to the log file
-                        if (!(dupLine(searchTerm, inFile2))) {
+                        if (!(dupLine(searchTerm, inFile2) && !negativeNum(line))) {
                             counties.add(county);
                             precincts.add(precinct);
                             demVotingNumbers.add(demNum);
@@ -141,11 +154,11 @@ public class CSVParse {
                                     Integer.parseInt(repNum),
                                     Integer.parseInt(othNum)));
                         } else {
-                            counties.add(county + " - incomplete");
+                            counties.add(county + " - invalid");
                             precincts.add(precinct);
-                            demVotingNumbers.add("-666");
-                            repVotingNumbers.add("-666");
-                            othVotingNumbers.add("-666");
+                            demVotingNumbers.add("0");
+                            repVotingNumbers.add("0");
+                            othVotingNumbers.add("0");
                             voterDataArray.add(new VoterData(county + " - incomplete",
                                     precinct,
                                     Integer.parseInt(demNum),
@@ -155,7 +168,9 @@ public class CSVParse {
                         }
                     }
                 }
+                inFile.close();
                 LOGGER.log(Level.FINE, "Array-check!");
+                loadVoterData();
 
                 /*
                 * Goes through each arraylist and prints the indicies to a text file
@@ -175,7 +190,6 @@ public class CSVParse {
                     votNumWriter3.append(s).append('\n');
                 }
             }
-
             // Closes all PrintWriters
             countWriter.close();
             votNumWriter.close();
@@ -203,13 +217,20 @@ public class CSVParse {
         }
         LOGGER.log(Level.FINE, "HashMultiMap-check!");
     }
-    
+
+    public String[] getListOfCounties() {
+        String[] allCounties;
+        Set<String> counties = voterDataHashmap.keySet();
+        allCounties = counties.toArray(new String[counties.size()]);
+        return allCounties;
+    }
+
     //=============================================================== Private Methods
 
     private void printIOExcepToLogFile(Exception e) throws FileNotFoundException {
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
-        PrintWriter err = new PrintWriter("logs/" + formatter.format(date) + ".log");
+        PrintWriter err = new PrintWriter(getLogDirectory() + "/logs/" + formatter.format(date) + ".log"); //TODO add (getLogDirectory() + "/) LIES REMOVE
         err.append("An IO Exception of some sort has occurred \n");
         err.append("------------------------------------------------------\n\r");
         err.append("StackTrace: \n");
@@ -245,6 +266,16 @@ public class CSVParse {
             }
         }
         return numCommas == 4;
+    }
+
+    private boolean negativeNum(String line) {
+        // If the current line has any dashes
+        for (int i = 0; i < line.length(); i++) {
+            if (line.charAt(i) == '-') {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean dupLine(String search, BufferedReader br) {
