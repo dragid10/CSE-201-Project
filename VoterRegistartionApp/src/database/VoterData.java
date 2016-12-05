@@ -1,6 +1,4 @@
-package database;
-
-// Import the MultiMap
+package database;// Import the MultiMap
 // Docs here: https://google.github.io/guava/releases/19.0/api/docs/com/google/common/collect/Multimap.html
 
 import com.google.common.collect.HashMultimap;
@@ -9,19 +7,18 @@ import java.util.logging.Logger;
 
 public class VoterData {
     //=============================================================== Variables
-    private static final Logger LOGGER = Logger.getLogger( VoterData.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger(VoterData.class.getName());
 
     private String county;
-    
 
-	private String precinct;
+
+    private String precinct;
     private int demVotes;
     private int repVotes;
     private int othVotes;
 
     // HashMap that houses all of the CountyData
     public static HashMultimap<String, VoterData> voterDataHashmap = HashMultimap.create();
-
 
     //=============================================================== Constructors
     public VoterData(String precinct, int demVotes, int repVotes, int othVotes) {
@@ -46,31 +43,32 @@ public class VoterData {
         setOthVotes(0);
     }
 
-    public VoterData clone(){
-    	return new VoterData(getCounty(), getPrecinct(), getDemVotes(), getRepVotes(), getOthVotes());
+    public VoterData clone() {
+        return new VoterData(getCounty(), getPrecinct(), getDemVotes(), getRepVotes(), getOthVotes());
     }
-    
+
     //=============================================================== Getters / Setters
 
     public String getCounty() {
-		return county;
-	}
+        return county;
+    }
 
-	public String getPrecinct() {
-		return precinct;
-	}
+    public String getPrecinct() {
+        return precinct;
+    }
 
-	public int getDemVotes() {
-		return demVotes;
-	}
+    public int getDemVotes() {
+        return demVotes;
+    }
 
-	public int getRepVotes() {
-		return repVotes;
-	}
+    public int getRepVotes() {
+        return repVotes;
+    }
 
-	public int getOthVotes() {
-		return othVotes;
-	}
+    public int getOthVotes() {
+        return othVotes;
+    }
+
     private void setCounty(String county) {
         this.county = county;
     }
@@ -90,4 +88,6 @@ public class VoterData {
     private void setOthVotes(int othVotes) {
         this.othVotes = othVotes;
     }
+
+
 }
