@@ -97,9 +97,12 @@ public class ImportWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//TODO if directory is set and no problems that exit but if not inform user with pop up and prompt
-				if(directory.getText().equals("") || logs.getText().equals("")){
+				if(directory.getText().equals("")){
 					//Error message that pop up if no path is given 
 					JOptionPane.showMessageDialog(panel,"You have not selected a directory yet", "Warning", JOptionPane.OK_OPTION);
+				}
+				if(logs.getText().equals("")){
+					JOptionPane.showMessageDialog(panel,"You have not set the destination location for the log directory", "Warning", JOptionPane.OK_OPTION);
 				}
 				else {
 					CSVParse parser = CSVParse.getInstance();

@@ -1,6 +1,7 @@
 package database;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +23,10 @@ public class CSVParse {
 
     // Directory you're reading from
     private File dir;
-
+    
+    //Directory you see error logs to
+    private File logDir;
+    
     public static ArrayList<VoterData> voterDataArray = new ArrayList<>();
 
     // Houses the counties from the read in line (Primary storage to reduce chance of error)
@@ -61,6 +65,14 @@ public class CSVParse {
     public File getDir() {
         return dir;
     }
+    
+    public File getLogDir() {
+		return logDir;
+	}
+
+	public void setLogDir(File logDir) {
+		this.logDir = logDir;
+	}
 
     public ArrayList<VoterData> getData() {
         ArrayList<VoterData> temp = new ArrayList<>();
@@ -85,10 +97,17 @@ public class CSVParse {
         dir = new File(directory);
         // Default Directory TODO Maybe come change this to a diff directory
 
+        //User decides where the log directory is located
+        logDir = new File(logDirectory + "\\logs\\");
+        logDir.mkdir();
+        if(!logDir.exists()){
+        	System.out.println("Log directory does not exit");
+        }
+        
         // Date function to name error logs
         Date date = new Date();
         Format formatter = new SimpleDateFormat("YYYY-MM-dd_hh-mm-ss");
-        err = new PrintWriter(getLogDirectory() + "/logs/" + formatter.format(date) + ".log"); //TODO add (getLogDirectory() + "/) LIES REMOVE
+        err = new PrintWriter(logDir.getPath() + "\\" + formatter.format(date) + ".log"); //TODO add (getLogDirectory() + "/) LIES REMOVE
 
         // Gotta encompass everything in a try, catch or else it'll yell at you.
         String COUNTY_FILENAME = ".outputFiles/counties.bin";
