@@ -155,6 +155,7 @@ public class CSVParse {
                         }
                     }
                 }
+                inFile.close();
                 LOGGER.log(Level.FINE, "Array-check!");
 
                 /*
