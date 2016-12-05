@@ -215,7 +215,7 @@ public class CSVParse {
         err.flush();
     }
 
-    private void printIllegalArgToLogFile() throws FileNotFoundException {
+    private void printIllegalArgToLogFile() {
         String fileName = "" + readFile;
         fileName = fileName.substring(fileName.indexOf('/') + 1, fileName.length());
         err.append("[Error: Corrupt or Invalid line] on line(").append(String.valueOf(getLineNumber())).append(") in ")
@@ -224,7 +224,7 @@ public class CSVParse {
         err.flush();
     }
 
-    private void printDuplicateLinesToLogFile(String dupLine) throws FileNotFoundException {
+    private void printDuplicateLinesToLogFile(String dupLine) {
         String fileName = "" + readFile;
         fileName = fileName.substring(fileName.indexOf('/') + 1, fileName.length());
         err.append("[Error: Duplicate Entry] on line(").append(String.valueOf(getLineNumber())).append(") in ")
