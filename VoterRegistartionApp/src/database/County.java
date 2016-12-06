@@ -25,6 +25,13 @@ public class County {
         setTotalOthVotes(county);
 
     }
+    
+    public County(String county, int dem, int rep, int oth){
+    	this.county = county;
+    	this.totalDemVotes = dem;
+    	this.totalRepVotes = rep;
+    	this.totalOthVotes = oth;
+    }
     // ================================================================================= Getters / Setters
     private void setTotalDemVotes(String countyName) {
         //int total = 0;

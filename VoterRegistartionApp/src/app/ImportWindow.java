@@ -34,7 +34,7 @@ public class ImportWindow extends JFrame {
 
 	public ImportWindow() {
 		setTitle("Import Data");
-		setSize(380, 280);
+		setSize(380, 220);
 		setLocationRelativeTo(Main.frame);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -54,7 +54,6 @@ public class ImportWindow extends JFrame {
 		error.setBounds(5, 70, 380, 30);
 		
 		directory = new JTextField(200);
-		//directory.setEditable(false);
 		panel.add(directory);
 		directory.setBounds(5, 35, 250, 30);
 		
@@ -62,11 +61,12 @@ public class ImportWindow extends JFrame {
 		panel.add(logs);
 		logs.setBounds(5, 105, 250, 30);
 
+	  /*
 		JLabel displayErr = new JLabel("Currently No Errors");
 		displayErr.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(displayErr);
 		displayErr.setBounds(errRect.x+20, errRect.y-24, errRect.width-40, errRect.height-4);
-	
+	   */
 		
 		//opens up file explorer
 		dataBrowse = new JButton("Browse");
@@ -96,9 +96,8 @@ public class ImportWindow extends JFrame {
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//TODO if directory is set and no problems that exit but if not inform user with pop up and prompt
+				//Error message that pop up if no path is given 
 				if(directory.getText().equals("")){
-					//Error message that pop up if no path is given 
 					JOptionPane.showMessageDialog(panel,"You have not selected a directory yet", "Warning", JOptionPane.OK_OPTION);
 				}
 				if(logs.getText().equals("")){
@@ -111,9 +110,10 @@ public class ImportWindow extends JFrame {
 						parser.setLogDirectory(logLocation);
 						parser.parse(dataDirectory);
 						Main.counties.setEnabled(true);
-						//dispose();
+						dispose();
 					} catch (FileNotFoundException e1) {
-						displayErr.setText("Directory could not be found.");
+						//displayErr.setText("Directory could not be found.");
+						System.out.println("Directory could not be found");
 					}
 				}
 			}
@@ -139,22 +139,7 @@ public class ImportWindow extends JFrame {
 	private void setDirectoryPath(String name) {
 		this.dataDirectory = name;
 	}
-
-	//opens a file explorer that allows user to set desired directory
-	/*private void openExplorer() {
-		chooser.setCurrentDirectory(new File("."));
-		chooser.setDialogTitle(getDirectoryPath());
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setAcceptAllFileFilterUsed(true);
-
-		if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-			File dir = chooser.getSelectedFile();
-			setDirectoryPath(dir.getPath());
-			directory.setText(getDirectoryPath());
-		} else {
-			JOptionPane.showMessageDialog(this,"You have not selected a directory yet", "Warning", JOptionPane.OK_OPTION);
-		}
-	}*/
+	
 	private String openExplorer() {
 		String path = "";
 		chooser.setCurrentDirectory(new File("."));
@@ -169,11 +154,6 @@ public class ImportWindow extends JFrame {
 			//JOptionPane.showMessageDialog(this,"You have not selected a directory yet", "Warning", JOptionPane.OK_OPTION);
 		}
 		return path;
-	}
-	@Override
-	public void paint(Graphics g){
-		super.paint(g);
-		g.drawRect(errRect.x, errRect.y, errRect.width, errRect.height);
 	}
 	
 	public static void main(String[] args) {

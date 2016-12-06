@@ -22,7 +22,6 @@ public class CountyDisplay extends JPanel {
 	private static final long serialVersionUID = 2457977387854519801L;
 	JPanel top = new JPanel();
 	JPanel bottom = new JPanel();
-	private ArrayList<County> userCounties = new ArrayList<>();
 
 	JCheckBox adams = new JCheckBox("Adams"), allen = new JCheckBox("Allen"), butler = new JCheckBox("Butler"),
 			carroll = new JCheckBox("Carroll"), clark = new JCheckBox("Clark"), delaware = new JCheckBox("Delaware"),
@@ -34,17 +33,16 @@ public class CountyDisplay extends JPanel {
 			clearAll = new JCheckBox("Clear All");
 	JCheckBox[] countyboxes = { adams, allen, butler, carroll, clark, delaware, erie, fairfield, greene,
 			hamilton, jefferson, logan, madison, ottawa, perry, ross, sandusky, stark };
-	//ArrayList<JCheckBox> countyBoxes = new ArrayList<>();
-	ArrayList<VoterData> userVoterData = new ArrayList<>();
 
+	private ArrayList<County> userCounties = new ArrayList<>();
 
-	public CountyDisplay(ArrayList<County> counties) { //ArrayList<VoterData> v){
+	public CountyDisplay(ArrayList<County> counties) { 
 		setBackground(Color.WHITE);
 		setLayout(null);
 		top.setBackground(Color.WHITE);
 		JScrollPane scroll = new JScrollPane(top);
 		add(scroll);
-		scroll.setBounds(0,0, 380, 220); //scroll.setBounds(0, 0, 190, 220);
+		scroll.setBounds(0,0, 380, 220);
 		bottom.setBackground(Color.WHITE);
 		add(bottom);
 		bottom.setBounds(0, 220, 380, 40);
@@ -85,7 +83,6 @@ public class CountyDisplay extends JPanel {
 			countyboxes[i].setBackground(Color.WHITE);
 			
 			//countyboxes[i].setForeground(Color.RED);
-			
 			//JCheckBox checkBox = new JCheckBox(v.get(i).getCounty());
 			//checkBox.setSelected(false);
 			//checkBox.addItemListener(listener);
@@ -117,7 +114,7 @@ public class CountyDisplay extends JPanel {
 					for (int i = 0; i < countyboxes.length; i++) {
 						((JCheckBox)countyboxes[i]).setSelected(false);	
 					}
-					userVoterData = new ArrayList<VoterData>();
+					userCounties = new ArrayList<County>();
 				}
 			}
 		});
