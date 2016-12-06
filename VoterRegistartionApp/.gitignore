@@ -238,3 +238,9 @@ bin/META-INF/
 libs/
 !/libs/
 !/.gitignore
+/bin/app/BarChartDisplay.class
+/bin/app/CountyDisplay.class
+/bin/app/TextDisplay.class
+/bin/app/ImportWindow.class
+/bin/app/PieChartDisplay.class
+/bin/app/Main.class
