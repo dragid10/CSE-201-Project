@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import org.jfree.ui.RefineryUtilities;
 
@@ -31,7 +32,6 @@ public class Main extends JPanel {
 	JButton getData, quit;
 	JLabel welcome, back;
 	Image welcomePic = Toolkit.getDefaultToolkit().getImage("lifeispain.jpg");
-	Image background = Toolkit.getDefaultToolkit().getImage("csebgredo_rgb.jpg");
 
 	CSVParse parser = CSVParse.getInstance();
 	ArrayList<County> temp = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Main extends JPanel {
 	
 	private int screenWidth = 400, screenHeight = 600;
 	private int buttonHeight = 30;
-	Rectangle window = new Rectangle(3, 70, screenWidth - 20, screenHeight / 2 + 10);
+	Rectangle window = new Rectangle(3, 70, screenWidth - 20, screenHeight / 2);
 
 	public Main() {
 		frame = new JFrame("(AL) G.O.E.R Version 1.375");
@@ -48,13 +48,10 @@ public class Main extends JPanel {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		mainWindow();
 	}
 
-	/**
-	 * 
-	 */
 	public void mainWindow() {
 		panel = new JPanel();
 		panel.setLayout(null);
@@ -67,9 +64,6 @@ public class Main extends JPanel {
 		
 		panel.setBackground(Color.WHITE);
 		
-		/*back = new JLabel(new ImageIcon(background));
-		panel.add(back);
-		back.setBounds(0, 0, screenWidth, screenHeight);*/
 		
 		//Brings up new window that gets the directory of data
 		getData = new JButton("Import");

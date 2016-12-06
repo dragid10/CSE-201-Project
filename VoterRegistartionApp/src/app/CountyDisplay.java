@@ -7,6 +7,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -22,6 +23,7 @@ public class CountyDisplay extends JPanel {
 	private static final long serialVersionUID = 2457977387854519801L;
 	JPanel top = new JPanel();
 	JPanel bottom = new JPanel();
+	JLabel numOfCounties;
 
 	JCheckBox adams = new JCheckBox("Adams"), allen = new JCheckBox("Allen"), butler = new JCheckBox("Butler"),
 			carroll = new JCheckBox("Carroll"), clark = new JCheckBox("Clark"), delaware = new JCheckBox("Delaware"),
@@ -35,7 +37,9 @@ public class CountyDisplay extends JPanel {
 			hamilton, jefferson, logan, madison, ottawa, perry, ross, sandusky, stark };
 
 	private ArrayList<County> userCounties = new ArrayList<>();
-
+	
+	private int countyCount = 0;
+	
 	public CountyDisplay(ArrayList<County> counties) { 
 		setBackground(Color.WHITE);
 		setLayout(null);
@@ -51,6 +55,13 @@ public class CountyDisplay extends JPanel {
 		top.setLayout(grid);
 		grid.setVgap(5);
 		
+		//Sets where the number of counties selected is displayed
+		numOfCounties = new JLabel("(0 Counties Selected)");
+		add(numOfCounties);
+		numOfCounties.setBounds(0, 260 , 380, 30);
+		numOfCounties.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		//ItemListener that is used on every checkbox to see if it is selected or not
 		ItemListener listener = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -58,6 +69,8 @@ public class CountyDisplay extends JPanel {
 					if (((JCheckBox) e.getSource()).isSelected()){ 
 						((JCheckBox) e.getSource()).setSelected(true);
 						clearAll.setSelected(false);
+						++countyCount;
+						numOfCounties.setText("(" + countyCount + " Counties Selected)");
 						for(County c: counties){
 							if(c.getCounty().equals(((JCheckBox) e.getSource()).getText())){
 								userCounties.add(c);
@@ -66,6 +79,8 @@ public class CountyDisplay extends JPanel {
 					} else {
 						((JCheckBox) e.getSource()).setSelected(false);
 						checkAll.setSelected(false);
+						--countyCount;
+						numOfCounties.setText( "(" + countyCount+ " Counties Selected)");
 						for(int i = counties.size()-1; i > 0; i--){
 							if(counties.get(i).getCounty().equals(((JCheckBox) e.getSource()).getText())){
 								userCounties.remove(counties.get(i));
