@@ -15,5 +15,8 @@
 	<classpathentry exported="true" kind="lib" path="libs/servlet.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/swtgraphics2d.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/libs"/>
+	<classpathentry kind="lib" path="libs/commons-io-2.5-javadoc.jar"/>
+	<classpathentry kind="lib" path="libs/commons-io-2.5.jar"/>
+	<classpathentry kind="lib" path="libs/commons-lang3-3.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

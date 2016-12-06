@@ -29,17 +29,17 @@ public class TextDisplay extends JFrame {
 		setVisible(true);
 		add(panel);
 		
-		int totalDemoVotes = 0;
-		int totalRepubVotes = 0;
-		int totalIndieVotes = 0;
+		int totalDemVotes = 0;
+		int totalRepVotes = 0;
+		int totalOthVotes = 0;
 		
 		for(int i = 0; i < c.size(); i++){
-			totalDemoVotes += c.get(i).getDemVotingData();
-			totalRepubVotes += c.get(i).getRepVotingData();
-			totalIndieVotes += c.get(i).getOthVotingData();
+			totalDemVotes += c.get(i).getDemVotingData();
+			totalRepVotes += c.get(i).getRepVotingData();
+			totalOthVotes += c.get(i).getOthVotingData();
 		}
 		
-		int total = totalDemoVotes + totalRepubVotes + totalIndieVotes;
+		double total = totalDemVotes + totalRepVotes + totalOthVotes;
 		
 		panel.setLayout(null);
 		top = new JPanel();
@@ -55,12 +55,16 @@ public class TextDisplay extends JFrame {
 		
 		for(County county: c){
 			top.add(new JLabel(county.getCounty() + ":"));
-			top.add(new JLabel("Democrat: "+ county.getDemVotingData()+
-							   " ("+county.getDemVotingData()/county.getTotal()*100+"%)"));
-			top.add(new JLabel("Republican: "+ county.getRepVotingData()+
-					  		   " ("+county.getRepVotingData()/county.getTotal()*100+"%)"));
-			top.add(new JLabel("Independent: "+ county.getOthVotingData()+
-					           " ("+county.getOthVotingData()/county.getTotal()*100+"%)"));
+			String demVotes = String.format("%.2f", (county.getDemVotingData()/(double)county.getTotal())*100);
+			String repVotes = String.format("%.2f", (county.getRepVotingData()/(double)county.getTotal())*100);
+			String othVotes = String.format("%.2f", (county.getOthVotingData()/(double)county.getTotal())*100);
+			
+			top.add(new JLabel("Democrat: "+ county.getDemVotingData() +
+							   " (" + demVotes + "%)"));
+			top.add(new JLabel("Republican: "+ county.getRepVotingData() +
+					   		   " (" + repVotes + "%)"));
+			top.add(new JLabel("Independent: "+ county.getOthVotingData() +
+					   		   " (" + othVotes + "%)"));
 			top.add(new JLabel(""));
 		}
 		
@@ -75,13 +79,17 @@ public class TextDisplay extends JFrame {
 		bottom.add(title);
 		//title.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		dem = new JLabel("Democrat: "+totalDemoVotes+" ("+totalDemoVotes/total*100+"%)");
+		String republican = String.format("%.2f", (totalRepVotes/total)*100);
+		String democrat = String.format("%.2f", (totalDemVotes/total)*100);
+		String independent = String.format("%.2f", (totalOthVotes/total)*100);
+		
+		dem = new JLabel("Democrat: "+totalDemVotes+" ("+democrat+"%)");
 		bottom.add(dem);
 		
-		rep = new JLabel("Republican: "+totalRepubVotes+" ("+totalRepubVotes/total*100+"%)");
+		rep = new JLabel("Republican: "+totalRepVotes+" ("+republican+"%)");
 		bottom.add(rep);
 		
-		ind = new JLabel("Independent: "+totalIndieVotes+" ("+totalIndieVotes/total*100+"%)");
+		ind = new JLabel("Independent: "+totalOthVotes+" ("+independent +"%)");
 		bottom.add(ind);
 		
 		revalidate();
